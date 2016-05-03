@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+    <artifactId>test</artifactId>
+    <groupId>com.sample</groupId>
+    <version>1.0-SNAPSHOT</version>
+  </parent>
+
+    <groupId>com.sample</groupId>
+    <artifactId>testapp</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>ear</packaging>
+
+    <name>testapp</name>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+  
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.10.1</version>
+                <configuration>
+                    <version>6</version>
+                    <defaultLibBundleDir>lib</defaultLibBundleDir>
+                    <modules>
+                        <ejbModule>
+                    		<groupId>com.sample</groupId>
+            				<artifactId>testejb</artifactId>
+            				<unpack>true</unpack>
+            				<bundleFileName>testejb.ejb</bundleFileName>
+                    	</ejbModule>
+                    	<webModule>
+                    		<groupId>com.sample</groupId>
+            				<artifactId>testwar</artifactId>
+            				<unpack>true</unpack>
+            				<bundleFileName>testwar.war</bundleFileName>
+                    	</webModule>
+                    </modules>
+                </configuration>
+            </plugin>
+	<plugin>
+		<groupId>org.apache.maven.plugins</groupId>
+		<artifactId>maven-dependency-plugin</artifactId>
+		<version>2.10</version>
+		<configuration>
+			<artifactItems>
+				<artifactItem>
+					<groupId>com.sample</groupId>
+					<artifactId>testapp</artifactId>
+					<version>1.0-SNAPSHOT</version>
+					<type>ear</type>
+					<overWrite>true</overWrite>
+					<outputDirectory>/opt/wildfly-8.2.1.Final/standalone/deployments/testapp.ear</outputDirectory>
+					<!--<destFileName>testapp.ear</destFileName> f<includes>[ comma separated 
+						list of file filters ]</includes> <excludes>[ comma separated list of file 
+						filters ]</excludes> -->
+				</artifactItem>
+			</artifactItems>
+			<!-- other configurations here -->
+		</configuration>
+	</plugin>
+        </plugins>
+    </build>
+    <dependencies>
+    	<dependency>
+    		<groupId>com.sample</groupId>
+    		<artifactId>testwar</artifactId>
+    		<type>war</type>
+    		<version>1.0-SNAPSHOT</version>
+    	</dependency>
+    	<dependency>
+    		<groupId>com.sample</groupId>
+    		<artifactId>testejb</artifactId>
+    		<type>ejb</type>
+    		<version>1.0-SNAPSHOT</version>
+    	</dependency>
+    </dependencies>
+</project>

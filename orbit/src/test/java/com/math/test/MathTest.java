@@ -2,8 +2,9 @@ package com.math.test;
 
 import com.math.MathUtils;
 import com.math.linear.Vector;
+import com.math.orbital.EllipticOrbitalElements;
 import com.math.orbital.OrbitalConstants;
-import com.math.orbital.OrbitalElements;
+import static java.lang.Math.*;
 
 import junit.framework.TestCase;
 
@@ -73,7 +74,7 @@ public class MathTest extends TestCase{
 	}
 	
 	public void testOrbit() {
-		OrbitalElements elem = new OrbitalElements(1.0, 0.1, 0.2, Math.PI/2, Math.PI/6, 0.3);
+		EllipticOrbitalElements elem = new EllipticOrbitalElements(1.0, 0.1, 0.2, Math.PI/2, Math.PI/6, 0.3);
 		
 		assertTrue(MathUtils.fpEquals(elem.getSemiMajorAxis(), 1.0));
 		assertTrue(MathUtils.fpEquals(elem.getEccentricity(), 0.1));
@@ -83,20 +84,42 @@ public class MathTest extends TestCase{
 		assertTrue(MathUtils.fpEquals(elem.getMeanAnomaly(), 0.3));
 		assertTrue(MathUtils.fpEquals(elem.getPeriod(OrbitalConstants.UNITS.canonical), 2*Math.PI));
 		elem.setSemiMajorAxis(22176000.0d);
-		double ans = 2 * Math.PI*104429889724.0d/118644295.354;
+		double ans = 2 * PI*104429889724.0d/118644295.354;
 		assertTrue(MathUtils.fpEquals(elem.getPeriod(OrbitalConstants.UNITS.english), ans));
 		elem.setSemiMajorAxis(6800.0d);
-		ans = 2 * Math.PI*560742.365084d/631.348715054;
+		ans = 2 * PI*560742.365084d/631.348715054;
 		assertTrue(MathUtils.fpEquals(elem.getPeriod(OrbitalConstants.UNITS.metric), ans));
 		
-		ans = elem.convertTrueAnomalyToEccentricAnomaly(0.0);
+		ans = elem.convertTrueAnomalyToConicAnomaly(0.0);
 		assertTrue(MathUtils.fpEquals(ans, 0.0d));
 		
-		ans = elem.convertTrueAnomalyToEccentricAnomaly(Math.PI);
-		assertTrue(MathUtils.fpEquals(ans, Math.PI));
+		ans = elem.convertTrueAnomalyToConicAnomaly(PI);
+		assertTrue(MathUtils.fpEquals(ans, PI));
 		
-		ans = elem.convertTrueAnomalyToEccentricAnomaly(Math.PI/2.0d);
-		System.out.println("eccentric anomaly is: " + ans);
+		double[] angles = {0,PI/6, PI/4, PI/3, PI/2, 2*PI/3, 3*PI/4, 5*PI/6, PI, 7*PI/6, 5*PI/4, 4*PI/3, 3*PI/2, 5*PI/3, 7*PI/4, 11*PI/6, 2*PI};
+		
+		for (double angle:angles){
+			ans = elem.convertTrueAnomalyToConicAnomaly(angle);
+//			System.out.println("for true anomaly " + angle*180/PI + " eccentric anomaly is: " + ans*180/PI);
+			double ans2 = elem.convertConicAnomalyToTrueAnomaly(ans);
+//			System.out.println("for eccentric anomaly " + ans*180/PI + " true anomaly is: " + ans2*180/PI);
+			assertTrue(MathUtils.fpEquals(ans2, angle));
+		}
+
+		double savedMeanAnomaly = elem.getMeanAnomaly();
+		for (double angle:angles){
+			elem.setMeanAnomaly(angle);
+			ans = elem.convertMeanAnomalyToConicAnomaly();
+			double ans2 = elem.convertConicAnomalyToMeanAnomaly(ans);
+			assertTrue(MathUtils.fpEquals(ans2, angle));
+//			System.out.println("for mean anomaly " + angle*180/PI + " eccentric anomaly is: " + ans*180/PI);
+		}
+		elem.setMeanAnomaly(savedMeanAnomaly);
+		for (double angle:angles){
+			ans = elem.getFlightPathAngle(angle);
+			System.out.println("for eccentric anomaly " + angle*180/PI + " flight path angle is: " + ans*180/PI);
+		}
+		
 		
 	}
 

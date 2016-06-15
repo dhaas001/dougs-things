@@ -1,5 +1,9 @@
 package com.math.orbital;
 
+import java.util.Date;
+import static java.lang.Math.*;
+
+import com.math.linear.Vector;
 import com.math.orbital.OrbitalConstants.UNITS;
 
 
@@ -51,6 +55,8 @@ public abstract class OrbitalElements {
 	public double getMeanMotion(UNITS units) {
 		return 2*Math.PI/getPeriod(units);
 	}
+	
+
 
 	public abstract double getSemiLatusRectum();
 	

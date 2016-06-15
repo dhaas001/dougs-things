@@ -27,6 +27,14 @@ public class Vector {
 		}
 	}
 	
+	public Vector(Vector v1){
+		dim = v1.getSize();
+		v = new double[dim];
+		for (int i = 0; i < dim; ++i){
+			v[i] = v1.get(i);
+		}
+	}
+	
 	
 	public int getSize(){
 		return dim;

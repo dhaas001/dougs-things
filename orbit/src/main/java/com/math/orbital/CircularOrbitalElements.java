@@ -1,39 +1,25 @@
 package com.math.orbital;
 
-import static java.lang.Math.*;
+import static java.lang.Math.PI;
+import static java.lang.Math.abs;
+import static java.lang.Math.cos;
+import static java.lang.Math.pow;
+import static java.lang.Math.sin;
+import static java.lang.Math.sqrt;
 
 import com.math.MathUtils;
 import com.math.orbital.OrbitalConstants.UNITS;
 
-
-public class EllipticOrbitalElements extends OrbitalElements{
+public class CircularOrbitalElements extends OrbitalElements {
 	private double o;  // longitude of the ascending node
 	private double u;  // argument of perigee (relative to line of nodes)
-	private double M;  // mean anomaly
-	private double nu; // true anomaly
 	private double trueLongitudeOfPeriapsis;
 	private boolean trueLongitudeOfPeriapsisSet;
 	private double longitudeOfPeriapsis;
 	private boolean longitudeOfPeriapsisSet;
 	
-	public EllipticOrbitalElements(){
+	public CircularOrbitalElements(){
 		
-	}
-	
-	public double getMeanAnomaly() {
-		return M;
-	}
-
-	public void setMeanAnomaly(double m) {
-		this.M = m;
-	}
-	
-	public double getTrueAnomaly() {
-		return nu;
-	}
-
-	public void setTrueAnomaly(double nu) {
-		this.nu = nu;
 	}
 	
 	public double getLongitudeOfPeriapsis() {
@@ -85,18 +71,6 @@ public class EllipticOrbitalElements extends OrbitalElements{
 		return a*(1-e*e);
 	}
 	
-	public double getPerigeeDistance() {
-		double a = getSemiMajorAxis();
-		double e = getEccentricity();
-		return a*(1-e);
-	}
-	
-	public double getApogeeDistance() {
-		double a = getSemiMajorAxis();
-		double e = getEccentricity();
-		return a*(1+e);
-	}
-	
 	@Override
 	public double getSpecificMechanicalEnergy(UNITS units) {
 		double a = getSemiMajorAxis();
@@ -111,50 +85,6 @@ public class EllipticOrbitalElements extends OrbitalElements{
 		return (2*PI/sqrtMu)*(pow(a, 1.5));
 	}
 	
-	public double convertTrueAnomalyToConicAnomaly(double nu){
-		double a = getSemiMajorAxis();
-		double e = getEccentricity();
-		double sinNu = sin(nu);
-		double cosNu = cos(nu);
-		double sinE = (sinNu*sqrt(1.0d-e*e))/(1.0d + e * cosNu);
-		double cosE = (e + cosNu)/(1.0d + e * cosNu);
-		return MathUtils.findAngle(sinE, cosE);
-	}
-	
-	// solve kepler's equation, converting mean anomaly to eccentric anomaly
-	// Algorithm 2
-	public double convertMeanAnomalyToConicAnomaly(){
-		double E = 0.0d;
-		double e = getEccentricity();
-		double M = getMeanAnomaly();
-		if ((M < 0 && M > (-PI)) || M > PI){
-			E = M - e;
-		}
-		else{
-			E = M + e;
-		}
-		double Enext;
-		while (true) {
-			Enext = E + (M - E + e * sin(E))/(1-e*cos(E));
-			if (abs(Enext - E)< .00000001){
-				break;
-			}
-			E = Enext;
-		}
-		return Enext;
-	}
-
-	// algorithm 5
-	public double convertConicAnomalyToTrueAnomaly(double E) {
-		double a = getSemiMajorAxis();
-		double e = getEccentricity();
-		double sinE = sin(E);
-		double cosE = cos(E);
-		double sinNu = (sinE*sqrt(1.0d-e*e))/(1.0d - e * cosE);
-		double cosNu = (cosE - e)/(1.0d - e * cosE);
-		return MathUtils.findAngle(sinNu, cosNu);
-	}
-
 	@Override
 	public double getFlightPathAngle(double E) {
 		double e = getEccentricity();
@@ -163,11 +93,6 @@ public class EllipticOrbitalElements extends OrbitalElements{
 		double sinFPA = (e * sinE)/sqrt(1.0d - e*e*cosE*cosE);
 		double cosFPA = sqrt((1.0d - e*e)/(1.0d - e*e*cosE*cosE));
 		return MathUtils.findAngle(sinFPA, cosFPA);
-	}
-
-	public double convertConicAnomalyToMeanAnomaly(double E) {
-		double e = getEccentricity();
-		return E - (e * sin(E));
 	}
 
 }

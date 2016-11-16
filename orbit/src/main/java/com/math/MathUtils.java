@@ -23,5 +23,17 @@ public class MathUtils {
 		// fourth quadrant
 		else return 2*PI + asinA;
 	}
+	
+	public static boolean fpGreaterThan(double d1, double d2){
+		return d1 > d2 + epsilon;
+	}
+	
+	public static boolean fpLessThan(double d1, double d2){
+		return d1 < d2 + epsilon;
+	}
+	
+	public static boolean fpGreaterThanLessThan(double d1, double d2, double d3){
+		return fpGreaterThan(d1, d2) && fpLessThan(d1, d3);
+	}
 
 }

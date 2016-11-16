@@ -11,14 +11,31 @@ public abstract class OrbitalElements {
 	private double a;  // semi-major axis
 	private double e;  // eccentricity
 	private double i;  // inclination
-	private double M;  // mean anomaly
 	
-	public OrbitalElements(double semimajoraxis, double eccentricity, double inclination, double meanAnomaly){
-		this.a = semimajoraxis;
-		this.e = eccentricity;
-		this.i = inclination;
-		this.M = meanAnomaly;
+	private double p;  // parameter
+	private boolean parameterSet;
+	
+	public OrbitalElements(){
+		
 	}
+
+	public boolean isParameterSet() {
+		return parameterSet;
+	}
+
+	public void setParameterIsSet(boolean parameterSet) {
+		this.parameterSet = parameterSet;
+	}
+
+	public double getParameter() {
+		return p;
+	}
+
+	public void setParameter(double p) {
+		this.p = p;
+		parameterSet = true;
+	}
+
 
 	public double getSemiMajorAxis() {
 		return a;
@@ -44,14 +61,6 @@ public abstract class OrbitalElements {
 		this.i = i;
 	}
 	
-	public double getMeanAnomaly() {
-		return M;
-	}
-
-	public void setMeanAnomaly(double m) {
-		this.M = m;
-	}
-	
 	public double getMeanMotion(UNITS units) {
 		return 2*Math.PI/getPeriod(units);
 	}
@@ -60,21 +69,9 @@ public abstract class OrbitalElements {
 
 	public abstract double getSemiLatusRectum();
 	
-	public abstract double getPerigeeDistance();
-	
-	public abstract double getApogeeDistance();
-	
 	public abstract double getSpecificMechanicalEnergy(UNITS units);
 	
 	public abstract double getPeriod(UNITS units);
-	
-	public abstract double convertTrueAnomalyToConicAnomaly(double nu);
-	
-	public abstract double convertConicAnomalyToTrueAnomaly(double C);
-	
-	public abstract double convertMeanAnomalyToConicAnomaly();
-	
-	public abstract double convertConicAnomalyToMeanAnomaly(double C);
 	
 	public abstract double getFlightPathAngle(double conicAnomaly);
 

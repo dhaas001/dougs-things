@@ -3,7 +3,11 @@ package com.math.test;
 import com.math.MathUtils;
 import com.math.linear.Vector;
 import com.math.orbital.EllipticOrbitalElements;
+import com.math.orbital.OrbitalCalculations;
 import com.math.orbital.OrbitalConstants;
+import com.math.orbital.OrbitalElements;
+import com.math.orbital.StateVector;
+
 import static java.lang.Math.*;
 
 import junit.framework.TestCase;
@@ -74,8 +78,13 @@ public class MathTest extends TestCase{
 	}
 	
 	public void testOrbit() {
-		EllipticOrbitalElements elem = new EllipticOrbitalElements(1.0, 0.1, 0.2, Math.PI/2, Math.PI/6, 0.3);
-		
+		EllipticOrbitalElements elem = new EllipticOrbitalElements();
+		elem.setSemiMajorAxis(1.0d);
+		elem.setEccentricity(0.1d);
+		elem.setInclination(0.2d);
+		elem.setLongitudeOfAscendingNode(Math.PI/2);
+		elem.setArgumentOfPerigee(Math.PI/6);
+		elem.setMeanAnomaly(0.3d);
 		assertTrue(MathUtils.fpEquals(elem.getSemiMajorAxis(), 1.0));
 		assertTrue(MathUtils.fpEquals(elem.getEccentricity(), 0.1));
 		assertTrue(MathUtils.fpEquals(elem.getInclination(), 0.2));
@@ -119,6 +128,23 @@ public class MathTest extends TestCase{
 			ans = elem.getFlightPathAngle(angle);
 			System.out.println("for eccentric anomaly " + angle*180/PI + " flight path angle is: " + ans*180/PI);
 		}
+		
+		Vector rInitial = new Vector(3,new double[]{1131.340d, -2282.343d, 6672.423d});
+		Vector vInitial = new Vector(3,new double[]{-5.64305d, 4.30333d, 2.42879d});
+		StateVector initial = new StateVector(rInitial, vInitial);
+		StateVector response = OrbitalCalculations.solveKepler(initial, 40.0d*60.0d, OrbitalConstants.UNITS.metric);
+		Vector rFinal = response.getPosition();
+		Vector vFinal = response.getVelocity();
+		assertTrue(MathUtils.fpEquals(rFinal.get(0), -4219.712620164972d));
+		assertTrue(MathUtils.fpEquals(rFinal.get(1), 4363.0008289291d));
+		assertTrue(MathUtils.fpEquals(rFinal.get(2), -3958.7952055898522d));
+		
+		assertTrue(MathUtils.fpEquals(vFinal.get(0), 3.689914368697828d));
+		assertTrue(MathUtils.fpEquals(vFinal.get(1), -1.9167783876515814d));
+		assertTrue(MathUtils.fpEquals(vFinal.get(2), -6.112497894613279d));
+		
+		// now do kepler in english
+//		rInitial.set(0, rInitial.get(0) * );
 		
 		
 	}

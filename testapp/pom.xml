@@ -41,7 +41,7 @@
                     		<groupId>com.sample</groupId>
             				<artifactId>testejb</artifactId>
             				<unpack>true</unpack>
-            				<bundleFileName>testejb.ejb</bundleFileName>
+            				<bundleFileName>testejb.jar</bundleFileName>
                     	</ejbModule>
                     	<webModule>
                     		<groupId>com.sample</groupId>
@@ -49,29 +49,39 @@
             				<unpack>true</unpack>
             				<bundleFileName>testwar.war</bundleFileName>
                     	</webModule>
+                    	
                     </modules>
                 </configuration>
             </plugin>
 	<plugin>
-		<groupId>org.apache.maven.plugins</groupId>
-		<artifactId>maven-dependency-plugin</artifactId>
-		<version>2.10</version>
-		<configuration>
-			<artifactItems>
-				<artifactItem>
-					<groupId>com.sample</groupId>
-					<artifactId>testapp</artifactId>
-					<version>1.0-SNAPSHOT</version>
-					<type>ear</type>
-					<overWrite>true</overWrite>
-					<outputDirectory>/opt/wildfly-8.2.1.Final/standalone/deployments/testapp.ear</outputDirectory>
-					<!--<destFileName>testapp.ear</destFileName> f<includes>[ comma separated 
-						list of file filters ]</includes> <excludes>[ comma separated list of file 
-						filters ]</excludes> -->
-				</artifactItem>
-			</artifactItems>
-			<!-- other configurations here -->
-		</configuration>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-dependency-plugin</artifactId>
+	<version>2.10</version>
+	<executions>
+		<execution>
+			<id>unpack</id>
+			<phase>package</phase>
+			<goals>
+				<goal>unpack</goal>
+			</goals>
+			<configuration>
+				<artifactItems>
+					<artifactItem>
+						<groupId>com.sample</groupId>
+						<artifactId>testapp</artifactId>
+						<version>1.0-SNAPSHOT</version>
+						<type>ear</type>
+						<overWrite>true</overWrite>
+						<outputDirectory>C:/wildfly-10.1.0.Final/standalone/deployments/testapp.ear</outputDirectory>
+						<!--<destFileName>testapp.ear</destFileName> f<includes>[ comma separated 
+							list of file filters ]</includes> <excludes>[ comma separated list of file 
+							filters ]</excludes> -->
+					</artifactItem>
+				</artifactItems>
+				<!-- other configurations here -->
+			</configuration>
+		</execution>
+	</executions>
 	</plugin>
         </plugins>
     </build>
@@ -88,5 +98,11 @@
     		<type>ejb</type>
     		<version>1.0-SNAPSHOT</version>
     	</dependency>
+    	<dependency>
+    		<groupId>com.sample</groupId>
+    		<artifactId>testcommon</artifactId>
+    		<version>1.0-SNAPSHOT</version>
+    	</dependency>
+    	
     </dependencies>
 </project>

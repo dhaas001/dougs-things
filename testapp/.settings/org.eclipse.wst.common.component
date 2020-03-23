@@ -2,10 +2,13 @@
     <wb-module deploy-name="testapp-1.0-SNAPSHOT">
         <wb-resource deploy-path="/" source-path="/target/m2e-wtp/ear-resources"/>
         <wb-resource deploy-path="/" source-path="/src/main/application" tag="defaultRootSource"/>
-        <dependent-module archiveName="testejb.ejb" deploy-path="/" handle="module:/resource/testejb/testejb">
+        <dependent-module archiveName="testejb.jar" deploy-path="/" handle="module:/resource/testejb/testejb">
             <dependency-type>uses</dependency-type>
         </dependent-module>
         <dependent-module archiveName="testwar.war" deploy-path="/" handle="module:/resource/testwar/testwar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="testcommon-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/sample/testcommon/1.0-SNAPSHOT/testcommon-1.0-SNAPSHOT.jar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>

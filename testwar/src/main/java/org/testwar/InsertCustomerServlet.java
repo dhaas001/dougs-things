@@ -2,18 +2,31 @@ package org.testwar;
 
 import java.io.IOException;
 
+import javax.ejb.EJB;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
- 
+
+import com.test.ejb.CrudService;
+
+import entity.InventoryCategory;
+ @WebServlet
 public class InsertCustomerServlet extends HttpServlet{
+	 @EJB CrudService svc;
  
     private static final long serialVersionUID = 1L;
     public void doPost(HttpServletRequest request, HttpServletResponse response){
         System.out.println("----- InsertCustomerServlet -----");
         try {
+        	InventoryCategory ic = new InventoryCategory();
+        	ic.setCategoryDescription("description");
+        	ic.setCategoryName("name");
+        	ic.setVersion(15);
+        	svc.createNewTransaction(ic);
+        	System.out.println("----- InventoryCategory has been persisted!!!! -----");
         // Get the customer value submitted from Customer.jsp page through HttpServletRequest object
             String name=request.getParameter("name");
             String address=request.getParameter("address");

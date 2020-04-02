@@ -26,7 +26,17 @@ public class CrudServiceBean implements CrudService {
 	
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public <T> T create(T t) {
+		em.persist(t);
+		em.flush();
+		em.refresh(t);
+		return t;
+	}
+	
+	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public <T> T createNewTransaction(T t) {
 		em.persist(t);
 		em.flush();
 		em.refresh(t);
@@ -34,41 +44,62 @@ public class CrudServiceBean implements CrudService {
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public <T> T find(Object id, Class<T> type) {
 		return (T) em.find(type, id);
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public <T> T update(T t) {
+		return (T)em.merge(t);
+	}
+	
+	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public <T> T updateNewTransaction(T t) {
 		return (T)em.merge(t);
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public void delete(Object t) {
+		Object ref = em.getReference(t.getClass(), t);
+		em.remove(ref);
+
+	}
+	
+	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRES_NEW)
+	public void deleteNewTransaction(Object t) {
 		Object ref = em.getReference(t.getClass(), t);
 		em.remove(ref);
 
 	}
 
 	@Override
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
 	public <T> List<T> findByNamedQuery(String queryName, Class c) {
-		return (List<T>) em.createNamedQuery(queryName, c).getResultList();
+		return (List<T>)em.createNamedQuery(queryName, c).getResultList();
 	}
 
 	@Override
-	public List findByNamedQuery(String queryName, int resultLimit) {
-		return em.createNamedQuery(queryName).setMaxResults(resultLimit).getResultList();
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public <T> List<T> findByNamedQuery(String queryName, int resultLimit, Class c) {
+		return (List<T>)em.createNamedQuery(queryName, c).setMaxResults(resultLimit).getResultList();
 	}
 
 	@Override
-	public List findByNamedQuery(String queryName, Map<String, Object> parameters) {
-		return findByNamedQuery(queryName, parameters,0);
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public <T> List<T> findByNamedQuery(String queryName, Map<String, Object> parameters, Class c) {
+		return (List<T>)findByNamedQuery(queryName, parameters,0, c);
 	}
 
 	@Override
-	public List findByNamedQuery(String queryName, Map<String, Object> parameters, int resultLimit) {
+	@TransactionAttribute(TransactionAttributeType.REQUIRED)
+	public <T> List<T> findByNamedQuery(String queryName, Map<String, Object> parameters, int resultLimit, Class c) {
 		Set<Entry<String, Object>> rawParams = parameters.entrySet();
-		Query query = em.createNamedQuery(queryName);
+		Query query = em.createNamedQuery(queryName, c);
 		if (resultLimit > 0){
 			query.setMaxResults(resultLimit);
 		}

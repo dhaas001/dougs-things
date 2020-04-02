@@ -8,7 +8,7 @@
         <dependent-module archiveName="testwar.war" deploy-path="/" handle="module:/resource/testwar/testwar">
             <dependency-type>uses</dependency-type>
         </dependent-module>
-        <dependent-module archiveName="testcommon-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/classpath/var/M2_REPO/com/sample/testcommon/1.0-SNAPSHOT/testcommon-1.0-SNAPSHOT.jar">
+        <dependent-module archiveName="testcommon-1.0-SNAPSHOT.jar" deploy-path="/lib" handle="module:/resource/testcommon/testcommon">
             <dependency-type>uses</dependency-type>
         </dependent-module>
     </wb-module>

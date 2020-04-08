@@ -25,6 +25,11 @@
             <version>7.0</version>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+    		<groupId>com.sample</groupId>
+    		<artifactId>testcommon</artifactId>
+    		<version>1.0-SNAPSHOT</version>
+    	</dependency>
     </dependencies>
 
     <build>

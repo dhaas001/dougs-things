@@ -16,6 +16,9 @@
     <!-- This allows you to define additional dependencies, it is the same as using the Dependencies: manifest attribute -->
     <dependencies>
       <module name="org.postgres" />
+      <module name="org.jboss.as.naming" />
+      <module name="org.jboss.as.server" />
+      <module name="org.jboss.msc" />
       <!-- <module name="deployment.javassist.proxy" />
       <module name="deployment.myjavassist" /> -->
       <!-- Import META-INF/services for ServiceLoader impls as well -->
@@ -32,6 +35,9 @@
     <dependencies>
       <!-- Adds a dependency on a ejb jar. This could also be done with a Class-Path entry -->
       <module name="org.postgres" />
+      <module name="org.jboss.as.naming" />
+      <module name="org.jboss.as.server" />
+      <module name="org.jboss.msc" />
       <!--<module name="deployment.testapp.ear.testejb.ejb" /> -->
     </dependencies>
     <!-- Set's local resources to have the lowest priority -->
@@ -47,7 +53,9 @@
     <dependencies>
       <!-- Adds a dependency on a ejb jar. This could also be done with a Class-Path entry -->
       <module name="org.postgres" />
-      <!--<module name="deployment.testapp.ear.testejb.ejb" /> -->
+      <module name="org.jboss.as.naming" />
+      <module name="org.jboss.as.server" />
+      <module name="org.jboss.msc" />
     </dependencies>
     
   </sub-deployment>

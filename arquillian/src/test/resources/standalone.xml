@@ -420,6 +420,7 @@
         <subsystem xmlns="urn:jboss:domain:messaging-activemq:1.0">
             <server name="default">
                 <cluster password="${jboss.messaging.cluster.password:CHANGE ME!!}"/>
+                <statistics enabled="true"/>
                 <security-setting name="#">
                     <role name="guest" send="true" consume="true" create-non-durable-queue="true" delete-non-durable-queue="true"/>
                 </security-setting>
@@ -439,7 +440,7 @@
                 <discovery-group name="dg-group1" jgroups-channel="activemq-cluster"/>
                 <cluster-connection name="my-cluster" address="jms" connector-name="http-connector" discovery-group="dg-group1"/>
                 <jms-queue name="ExpiryQueue" entries="java:/jms/queue/ExpiryQueue"/>
-                <jms-queue name="ExampleQueue" entries="java:/jms/queue/example"/>
+                <jms-queue name="ExampleQueue" entries="java:/jms/queue/example java:jboss/exported/jms/queue/example"/>
                 <jms-queue name="DLQ" entries="java:/jms/queue/DLQ"/>
                 <connection-factory name="InVmConnectionFactory" entries="java:/ConnectionFactory" connectors="in-vm"/>
                 <connection-factory name="RemoteConnectionFactory" entries="java:jboss/exported/jms/RemoteConnectionFactory" connectors="http-connector" ha="true" block-on-acknowledge="true" reconnect-attempts="-1"/>
@@ -590,4 +591,5 @@
             <remote-destination host="localhost" port="25"/>
         </outbound-socket-binding>
     </socket-binding-group>
+
 </server>

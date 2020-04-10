@@ -7,6 +7,9 @@ import static org.junit.Assert.fail;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
@@ -36,7 +39,6 @@ import entity.InventoryCategory;
 @RunWith(Arquillian.class)
 public class CrudServiceTest {
 
-
     @Deployment
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
@@ -47,24 +49,47 @@ public class CrudServiceTest {
     @EJB
     private CrudService crudSvc;
 
-
-    /**
-     * Test of getList method, of class MyResource.
-     */
-   
+//    @Test @InSequence(1)
+//    public void setUp() throws MalformedURLException {
+//    	Map<String, Object> params = new HashMap<>();
+//    	params.put("name", "name2");
+//    	List<InventoryCategory> cats = crudSvc.findByNamedQuery(InventoryCategory.INVENTORY_CATEGORY_FIND_BY_NAME, params, InventoryCategory.class);
+//    	for (InventoryCategory cat:cats) {
+//    		System.out.println("deleting cat: " + cat.getCategoryName());
+//    		crudSvc.deleteNewTransaction(cat);
+//    	}
+//    }
     
-    @Test @InSequence(1)
+    
+    @Test @InSequence(2)
     public void testCrudService() {
     	assertNotNull("CrudService is null", crudSvc);
     }
     
-    @Test @InSequence(2)
+    @Test @InSequence(3)
     public void testInventoryCategoryCreation() {
+    	Map<String, Object> params = new HashMap<>();
+    	params.put("name", "name2");
+    	List<InventoryCategory> cats = crudSvc.findByNamedQuery(InventoryCategory.INVENTORY_CATEGORY_FIND_BY_NAME, params, InventoryCategory.class);
+//    	assertEquals("initially should be zero", cats.size(), 0);
     	InventoryCategory ic = new InventoryCategory();
     	ic.setCategoryDescription("description2");
     	ic.setCategoryName("name2");
     	ic.setVersion(15);
     	crudSvc.createNewTransaction(ic);
+    	cats = crudSvc.findByNamedQuery(InventoryCategory.INVENTORY_CATEGORY_FIND_BY_NAME, params, InventoryCategory.class);
+//    	assertEquals("initially should be zero", cats.size(), 1);
     }
+    
+//    @Test @InSequence(4)
+//    public void cleanup() {
+//    	Map<String, Object> params = new HashMap<>();
+//    	params.put("name", "name2");
+//    	List<InventoryCategory> cats = crudSvc.findByNamedQuery(InventoryCategory.INVENTORY_CATEGORY_FIND_BY_NAME, params, InventoryCategory.class);
+//    	for (InventoryCategory cat:cats) {
+//    		System.out.println("deleting cat: " + cat.getCategoryName());
+//    		crudSvc.deleteNewTransaction(cat);
+//    	}
+//    }
 
 }

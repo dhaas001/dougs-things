@@ -10,7 +10,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.TimeUnit;
 
 @Alternative
-@ApplicationScoped
+//@ApplicationScoped
 public class ExampleMessageHandlerTestable implements ExampleMessageHandler {
 
     private BlockingQueue<String> queue = new LinkedBlockingQueue<String>();

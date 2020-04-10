@@ -27,7 +27,8 @@ public class ExampleMDB implements MessageListener {
 	 @EJB
 	 private CrudService crudSvc;
 
-    private ExampleMessageHandler exampleMessageHandler = new ExampleMessageHandlerUntestable();
+	 @Inject
+    private ExampleMessageHandler exampleMessageHandler;
 
     @Override
     public void onMessage(Message message) {

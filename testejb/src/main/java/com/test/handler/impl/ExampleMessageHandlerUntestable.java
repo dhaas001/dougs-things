@@ -5,7 +5,7 @@ import javax.enterprise.inject.Default;
 
 import com.test.handler.ExampleMessageHandler;
 
-//@Default
+@Default
 public class ExampleMessageHandlerUntestable implements ExampleMessageHandler {
 
     @Override

@@ -8,8 +8,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.ejb.EJB;
 import javax.inject.Inject;
@@ -34,6 +36,11 @@ import org.junit.runner.RunWith;
 
 import com.test.ejb.CrudService;
 import com.test.ejb.impl.CrudServiceBean;
+import com.test.pojo.Course;
+import com.test.pojo.CourseRating;
+import com.test.pojo.CourseRatingKey;
+import com.test.pojo.Student;
+
 import entity.InventoryCategory;
 
 @RunWith(Arquillian.class)
@@ -43,6 +50,7 @@ public class CrudServiceTest {
     public static WebArchive createDeployment() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
                 .addClasses(CrudServiceBean.class, CrudService.class, InventoryCategory.class)
+                .addPackage(Student.class.getPackage())
                 .addAsResource("META-INF/persistence.xml");
     }
     
@@ -81,7 +89,33 @@ public class CrudServiceTest {
 //    	assertEquals("initially should be zero", cats.size(), 1);
     }
     
-//    @Test @InSequence(4)
+    @Test @InSequence(4)
+    public void testStudentCourseCreation() {
+    	Student s1 = new Student(12345L);
+    	Course c1 = new Course(654L);
+    	Course c2 = new Course(321L);
+    	Course c3 = new Course(987L);
+    	CourseRatingKey key1 = new CourseRatingKey(12345L, 654L);
+    	CourseRatingKey key2  = new CourseRatingKey(12345L, 321L);
+    	CourseRatingKey key3  = new CourseRatingKey(12345L, 987L);
+    	
+    	CourseRating rating1 = new CourseRating(key1);
+    	CourseRating rating2 = new CourseRating(key2);
+    	CourseRating rating3 = new CourseRating(key3);
+    	
+    	Set <CourseRating> ratings = new HashSet<>();
+    	ratings.add(rating1);
+    	ratings.add(rating2);
+    	ratings.add(rating3);
+    	
+    	s1.setRatings(ratings);
+    	
+    	crudSvc.createNewTransaction(s1);
+//    	cats = crudSvc.findByNamedQuery(InventoryCategory.INVENTORY_CATEGORY_FIND_BY_NAME, params, InventoryCategory.class);
+//    	assertEquals("initially should be zero", cats.size(), 1);
+    }
+    
+//    @Test @InSequence(5)
 //    public void cleanup() {
 //    	Map<String, Object> params = new HashMap<>();
 //    	params.put("name", "name2");

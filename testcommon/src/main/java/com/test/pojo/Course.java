@@ -22,13 +22,15 @@ public class Course {
     @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE}, mappedBy = "likedCourses")
     private Set<Student> likes = new HashSet<>();
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<CourseRating> ratings = new HashSet<>();
 
-    @OneToMany(mappedBy = "course")
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL,  orphanRemoval = true)
     private Set<CourseRegistration> registrations = new HashSet<>();
 
     // additional properties
+    
+    public Course() {}
 
     public Course(Long id) {
        this.id = id;
@@ -36,6 +38,10 @@ public class Course {
 
     public Long getId() {
         return id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Set<CourseRating> getRatings() {

@@ -27,6 +27,8 @@ public class CourseRating {
 
     @Column(name = "rating")
     private int rating;
+    
+    public CourseRating() {}
 
     public CourseRating(CourseRatingKey key) {
     	this.id = key;
@@ -43,13 +45,25 @@ public class CourseRating {
     public CourseRatingKey getId() {
         return id;
     }
+    
+    public void setId(CourseRatingKey id) {
+        this.id = id;
+    }
 
     public Student getStudent() {
         return student;
     }
+    
+    public void setStudent(Student s) {
+        student = s;
+    }
 
     public Course getCourse() {
         return course;
+    }
+    
+    public void getCourse(Course c) {
+        course = c;
     }
 
     @Override

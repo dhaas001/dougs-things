@@ -32,6 +32,8 @@ public class Student {
     private Set<CourseRegistration> registrations = new HashSet<>();
 
     // additional properties
+    
+    public Student() {}
 
     public Student(Long id) {
     	this.id = id; 
@@ -41,6 +43,10 @@ public class Student {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public Set<Course> getLikedCourses() {
         return likedCourses;
     }

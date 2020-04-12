@@ -107,9 +107,17 @@ public class CrudServiceTest {
     	ratings.add(rating1);
     	ratings.add(rating2);
     	ratings.add(rating3);
-    	
     	s1.setRatings(ratings);
     	
+    	Set <Course> likedCourses = new HashSet<>();
+    	likedCourses.add(c1);
+    	likedCourses.add(c2);
+    	
+//    	s1.setLikedCourses(likedCourses);
+    	
+    	crudSvc.createNewTransaction(c1);
+    	crudSvc.createNewTransaction(c2);
+    	crudSvc.createNewTransaction(c3);
     	crudSvc.createNewTransaction(s1);
 //    	cats = crudSvc.findByNamedQuery(InventoryCategory.INVENTORY_CATEGORY_FIND_BY_NAME, params, InventoryCategory.class);
 //    	assertEquals("initially should be zero", cats.size(), 1);
